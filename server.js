@@ -32,13 +32,15 @@ mongoose.connect("mongodb://localhost/newsscrape");
 
 // Set up handlebars
 var exphbs = require("express-handlebars");
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({ defaultLayout: "home" }));
 app.set("view engine", "handlebars");
 
 
 // Import routes
 
 app.use( require("./controllers/fetch.js"));
+
+app.use( require("./controllers/home.js"));
 
 
 

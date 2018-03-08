@@ -1,0 +1,145 @@
+/* Stylesheet for views */
+
+/* wrapper for all content */
+
+.wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.clearfix{
+	content: “”;    
+	display: block;
+	clear: both;
+} 
+
+/* ------ Header--- */
+
+.jumbotron-fluid {
+    height: 420px;
+}
+
+
+.header {
+    margin: 0 0 10px 0;
+    padding: 80px 20px 0 20px;
+    background-image: url("../images/headerBtc.PNG");
+    background-size: 100% 420px;
+    background-repeat: no-repeat;
+    background-position: top left;
+
+}
+
+.header-text {
+    font-size: 32px;
+    color: #FFFFFF;
+    margin-right: 40px
+}
+
+.header-text-logo {
+    font-size: 44px;
+    color: #FFFFFF;
+    margin-right: 40px;
+}
+
+.btn-primary {
+    background-color: #45bcae;
+    border-color: #45bcae;
+}
+
+.dropdown-posn {
+    margin-right: 40px;
+}
+
+.navbar-posn {
+    margin-right: 25px;
+}
+
+
+
+/* card styles */
+
+.card-style {
+    width: 100%;
+    margin-top: 15px;
+}
+
+.card-btns-center {
+    margin: 0 auto;
+}
+
+.card-links {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.card-title {
+    background-color: lightgrey;
+    padding: 5px;
+}
+
+.newsitem-image {
+    padding: 0 10px 0 0;
+    margin: 0;
+}
+
+.newsitem-title {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.newsitem-description {
+    font-size: 12px;
+}
+
+.newsitem-date {
+    font-size: 12px;
+    background-color: #eeeeee;
+    padding: 2px;
+}
+
+.newsitem-btns {
+    font-size: 12px;
+    font-weight: bold;
+    float: right;
+    margin-left: 8px;
+}
+
+.modal-heading {
+    color: teal;
+}
+
+.modal-date {
+    background-color: #eeeeee;
+    padding: 2px;
+    width: 150px;
+}
+
+.newsitem-save-btn, .newsitem-read-btn  {
+    padding: 0 10px 0 10px;
+    margin-top: 3px;
+}
+
+
+
+
+
+/* Footer styles */
+
+.footer {
+    margin-top: 75px;
+}
+
+.social-icons {
+    font-size: 30px;
+    text-align: center;
+}
+
+.soc-icn {
+    margin: 5px 10px 0 10px;
+}
+
+.address tr td { 
+    padding: 6px 0 0 6px;
+}
+

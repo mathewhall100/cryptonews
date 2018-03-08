@@ -1,4 +1,4 @@
-// Dependencies
+// ------------------------------------Dependencies ----------------------------------
 
 // require express & set up router middleware
 var express = require("express");
@@ -9,13 +9,36 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 
+// ====================================
+// create routes with logic as required
+// ===================================
 
-// Scraping routes ----------------------------------------------------------------------------
+
+// route for /
+
+routerScrape.get("/", function (req, res) {
+
+    var numRecords = 5;
+
+    var data = fetchAll(req.query.term, numRecords) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
+        .then(function (hbsObj) {
+            console.log(hbsObj);
+            return res.render("index", hbsObj);
+        }).catch(function (error) {
+            console.error('ERROR', error)
+        });
+});
+
+
+
+// ---------------------------------- Scraping routes --------------------------------
 
 // A GET route for scraping all sites
 routerScrape.get("/scrape-all/:term", function (req, res) {
 
-    var data = fetchAll(req.query.term) // e.g. http://localhost:3000/scrape-mk/search?term=Ink
+
+
+    var data = fetchAll(req.query.term) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
         .then(function (result) {
             console.log(result);
             return res.json(result);
@@ -28,7 +51,7 @@ routerScrape.get("/scrape-all/:term", function (req, res) {
 // A GET route for scraping the CNN website
 routerScrape.get("/scrape-cn/:term", function (req, res) {
 
-    var data = fetchCcn(req.query.term) // e.g. http://localhost:3000/scrape-mk/search?term=Ink
+    var data = fetchCcn(req.query.term)
         .then(function (result) {
             console.log(result);
             return res.json(result);
@@ -37,10 +60,11 @@ routerScrape.get("/scrape-cn/:term", function (req, res) {
         });
 });
 
+
 // A GET route for scraping the coin telegraph website
 routerScrape.get("/scrape-ct/:term", function (req, res) {
 
-    var data = fetchCtg(req.query.term) // e.g. http://localhost:3000/scrape-mk/search?term=Ink
+    var data = fetchCtg(req.query.term)
         .then(function (result) {
             console.log(result);
             return res.json(result);
@@ -54,7 +78,7 @@ routerScrape.get("/scrape-ct/:term", function (req, res) {
 routerScrape.get("/scrape-mk/:term", function (req, res) {
 
     var data = fetchesMkl(req.query.term)
-        .then(function (result) { // e.g. http://localhost:3000/scrape-mk/search?term=Ink
+        .then(function (result) {
             console.log(result);
             return res.json(result);
         }).catch(function (error) {
@@ -67,7 +91,7 @@ routerScrape.get("/scrape-mk/:term", function (req, res) {
 routerScrape.get("/scrape-bnc/:term", function (req, res) {
 
     var data = fetchBnc(req.query.term)
-        .then(function (result) { // e.g. http://localhost:3000/scrape-mk/search?term=Ink
+        .then(function (result) {
             console.log(result);
             return res.json(result);
         }).catch(function (error) {
@@ -79,35 +103,30 @@ routerScrape.get("/scrape-bnc/:term", function (req, res) {
 
 
 
-// Functions ----------------------------------------------------------------------------
+// ------------------------ Scraping functions ------------------------------------
 
 // Async function to get and scape all sites
-async function fetchAll(searchterm) {
+async function fetchAll(searchterm, numRecords) {
 
-    var resultsAll = [];
+    var hbsObj = {
+        resultsCcn: await fetchCcn(searchterm),
+        resultsCtg: await fetchCtg(searchterm, numRecords),
+        resultsMkl: await fetchesMkl(searchterm),
+        resultsBnc: await fetchBnc(searchterm)
+    };
 
-    var data = await fetchCcn(searchterm);
-    resultsAll = resultsAll.concat(data);
 
-    var data = await fetchCtg(searchterm);
-    resultsAll = resultsAll.concat(data);
-
-    var data = await fetchesMkl(searchterm);
-    resultsAll = resultsAll.concat(data);
-
-    var data = await fetchBnc(searchterm);
-    resultsAll = resultsAll.concat(data);
-
-    console.log(resultsAll);
-    return resultsAll;
+    //console.log(hbsObj);
+    return hbsObj;
 }
 
 
-// Async function to get and scape Coin telegraph site
-async function fetchCtg(searchterm) {
+// Async function to get and scape Coin Telegraph site
+async function fetchCtg(searchterm, numRecords) {
 
     // Initialise an empty array to store all scraped objects
     var resultsCtg = [];
+    var countRecords = 0;
 
     // Grab the body of the html with request
     var data = await axios.get("https://www.cointelegraph.com").then(function (response) {
@@ -140,29 +159,36 @@ async function fetchCtg(searchterm) {
             result.date = $(this)
                 .children('div')
                 .children('span[class="date"]')
-                .text();
-
+                .text().slice(1);
             result.newssite_full = "Coin Telegraph";
             result.newsite_abbr = "CTG";
+            result.id = countRecords;
 
             // If no searchterm then push result object to results array
             // If searchterm present then search artcile title for searchterm and push to array if found/match
-            if (!searchterm) {
-                resultsCtg.push(result);
-            } else {
-                if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+            if (countRecords < numRecords) {
+
+                if (!searchterm) {
+
                     resultsCtg.push(result);
+                } else {
+                    if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+                        resultsCtg.push(result);
+                    }
                 }
+
+                countRecords++
             }
         });
+
     });
 
-    console.log(resultsCtg);
+    //console.log(resultsCtg);
     return resultsCtg;
 }
 
 
-// Async function to get and scape cryptocoin news site
+// Async function to get and scape Cryptocoin News site
 async function fetchCcn(searchterm) {
 
     // Initialise an empty array to store all scraped objects
@@ -202,7 +228,7 @@ async function fetchCcn(searchterm) {
                 .children("header")
                 .children("div")
                 .children("time")
-                .text();
+                .text().slice(1);
             result.newssite_full = "Crypto Coin News";
             result.newsite_abbr = "CNN";
 
@@ -219,18 +245,18 @@ async function fetchCcn(searchterm) {
     });
 
     // return the results array
-    console.log(resultsCcn);
+    // console.log(resultsCcn);
     return resultsCcn;
 }
 
 
-// Async function to get and scape each page in turn of first five pages of news articles 
+// Async function to get and scape each page in turn of first five pages of news articles from The Merkle.com
 async function fetchesMkl(searchterm) {
 
     // Initialise an empty array to store all scraped objects
     var resultsMkl = [];
     // Number of pages to scrape
-    var numPages = 5;
+    var numPages = 1;
 
     for (var page = 1; page <= numPages; page++) {
 
@@ -289,11 +315,11 @@ async function fetchesMkl(searchterm) {
             resultsMkl = resultsMkl.concat(results);
         });
     }
-    console.log(resultsMkl);
+    //console.log(resultsMkl);
     return resultsMkl;
 }
 
-// Async function to get and scape Coin telegraph site
+// Async function to get and scape Brave New Coin site
 async function fetchBnc(searchterm) {
 
     // Initialise an empty array to store all scraped objects
@@ -316,7 +342,7 @@ async function fetchBnc(searchterm) {
                 .children('h3')
                 .children('a')
                 .text();
-            result.link = $(this)
+            result.link = "https://www.bravenewcoin.com" + $(this)
                 .children('span')
                 .children('a')
                 .attr("href");
@@ -332,10 +358,10 @@ async function fetchBnc(searchterm) {
                 .children('img')
                 .attr('src');
             result.date = $(this)
-            .children('span')
-            .children('div[class="fader"]')
-            .children('p')
-            .text().slice(-11);
+                .children('span')
+                .children('div[class="fader"]')
+                .children('p')
+                .text().slice(-11);
 
             result.newssite_full = "Brave New Coin";
             result.newsite_abbr = "BNC";
@@ -352,7 +378,7 @@ async function fetchBnc(searchterm) {
         });
     });
 
-    console.log(resultsBnc);
+    //console.log(resultsBnc);
     return resultsBnc;
 }
 
