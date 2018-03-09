@@ -30,7 +30,7 @@ app.use(express.static("public"));
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscrape";
 mongoose.Promise = Promise;
-mongoose.connect("mongodb://localhost/newsscrape");
+mongoose.connect("mongodb://localhost/newsscrape", { useMongoClient: true} );
 
 // Set up handlebars
 var exphbs = require("express-handlebars");
