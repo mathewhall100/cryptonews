@@ -22,7 +22,7 @@ routerScrape.get("/", function (req, res) {
 
     var data = fetchAll(req.query.term, numRecords) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
         .then(function (hbsObj) {
-            console.log(hbsObj);
+            //console.log(hbsObj);
             return res.render("index", hbsObj);
         }).catch(function (error) {
             console.error('ERROR', error)
@@ -36,11 +36,9 @@ routerScrape.get("/", function (req, res) {
 // A GET route for scraping all sites
 routerScrape.get("/scrape-all/:term", function (req, res) {
 
-
-
     var data = fetchAll(req.query.term) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
         .then(function (result) {
-            console.log(result);
+            //console.log(result);
             return res.json(result);
         }).catch(function (error) {
             console.error('ERROR', error)
@@ -49,12 +47,16 @@ routerScrape.get("/scrape-all/:term", function (req, res) {
 
 
 // A GET route for scraping the CNN website
-routerScrape.get("/scrape-cn/:term", function (req, res) {
+routerScrape.get("/scrape-ccn/:term", function (req, res) {
 
-    var data = fetchCcn(req.query.term)
-        .then(function (result) {
-            console.log(result);
-            return res.json(result);
+    var data = fetchCcn(req.query.term, 25)
+        .then(function (articleList) {
+            var hbsObj = {
+                articles: articleList,
+                newssite: "Crypto Coin News"
+            };
+            //console.log(hbsObj);
+            return res.render("site_news", hbsObj);
         }).catch(function (error) {
             console.error('ERROR', error)
         });
@@ -62,12 +64,16 @@ routerScrape.get("/scrape-cn/:term", function (req, res) {
 
 
 // A GET route for scraping the coin telegraph website
-routerScrape.get("/scrape-ct/:term", function (req, res) {
+routerScrape.get("/scrape-ctg/:term", function (req, res) {
 
-    var data = fetchCtg(req.query.term)
-        .then(function (result) {
-            console.log(result);
-            return res.json(result);
+    var data = fetchCtg(req.query.term, 25)
+        .then(function (articleList) {
+            var hbsObj = {
+                articles: articleList,
+                newssite: "Coin telegraph"
+            };
+            //console.log(hbsObj);
+            return res.render("site_news", hbsObj);
         }).catch(function (error) {
             console.error('ERROR', error)
         });
@@ -75,12 +81,16 @@ routerScrape.get("/scrape-ct/:term", function (req, res) {
 
 
 // A GET route for scraping the merkle website
-routerScrape.get("/scrape-mk/:term", function (req, res) {
+routerScrape.get("/scrape-mkl/:term", function (req, res) {
 
-    var data = fetchesMkl(req.query.term)
-        .then(function (result) {
-            console.log(result);
-            return res.json(result);
+    var data = fetchesMkl(req.query.term, 25)
+        .then(function (articleList) {
+            var hbsObj = {
+                articles: articleList,
+                newssite: "The Merkle"
+            };
+            //console.log(hbsObj);
+            return res.render("site_news", hbsObj);
         }).catch(function (error) {
             console.error('ERROR', error)
         });
@@ -90,10 +100,14 @@ routerScrape.get("/scrape-mk/:term", function (req, res) {
 // A GET route for scraping xxxx website
 routerScrape.get("/scrape-bnc/:term", function (req, res) {
 
-    var data = fetchBnc(req.query.term)
-        .then(function (result) {
-            console.log(result);
-            return res.json(result);
+    var data = fetchBnc(req.query.term, 25)
+        .then(function (articleList) {
+            var hbsObj = {
+                articles: articleList,
+                newssite: "Brave New Coin"
+            };
+            //console.log(hbsObj);
+            return res.render("site_news", hbsObj);
         }).catch(function (error) {
             console.error('ERROR', error)
         });
@@ -109,10 +123,10 @@ routerScrape.get("/scrape-bnc/:term", function (req, res) {
 async function fetchAll(searchterm, numRecords) {
 
     var hbsObj = {
-        resultsCcn: await fetchCcn(searchterm),
+        resultsCcn: await fetchCcn(searchterm, numRecords),
         resultsCtg: await fetchCtg(searchterm, numRecords),
-        resultsMkl: await fetchesMkl(searchterm),
-        resultsBnc: await fetchBnc(searchterm)
+        resultsMkl: await fetchesMkl(searchterm, numRecords),
+        resultsBnc: await fetchBnc(searchterm, numRecords)
     };
 
 
@@ -161,7 +175,7 @@ async function fetchCtg(searchterm, numRecords) {
                 .children('span[class="date"]')
                 .text().slice(1);
             result.newssite_full = "Coin Telegraph";
-            result.newsite_abbr = "CTG";
+            result.newssite_abbr = "CTG";
             result.id = countRecords;
 
             // If no searchterm then push result object to results array
@@ -189,10 +203,11 @@ async function fetchCtg(searchterm, numRecords) {
 
 
 // Async function to get and scape Cryptocoin News site
-async function fetchCcn(searchterm) {
+async function fetchCcn(searchterm, numRecords) {
 
     // Initialise an empty array to store all scraped objects
     var resultsCcn = [];
+    var countRecords = 0;
 
     // Grab the body of the html with request
     var data = await axios.get("https://www.ccn.com/").then(function (response) {
@@ -206,6 +221,10 @@ async function fetchCcn(searchterm) {
             var result = {};
 
             result.title = $(this)
+                .children("div")
+                .children("a")
+                .attr("title");
+            result.description = $(this)
                 .children("div")
                 .children("a")
                 .attr("title");
@@ -230,16 +249,21 @@ async function fetchCcn(searchterm) {
                 .children("time")
                 .text().slice(1);
             result.newssite_full = "Crypto Coin News";
-            result.newsite_abbr = "CNN";
+            result.newssite_abbr = "CNN";
 
             // If no searchterm then push result object to results array
             // If searchterm present then search artcile title for searchterm and push to array if found/match
-            if (!searchterm) {
-                resultsCcn.push(result);
-            } else {
-                if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+            if (countRecords < numRecords) {
+
+                if (!searchterm) {
                     resultsCcn.push(result);
+                } else {
+                    if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+                        resultsCcn.push(result);
+                    }
                 }
+
+                countRecords++
             }
         });
     });
@@ -251,10 +275,12 @@ async function fetchCcn(searchterm) {
 
 
 // Async function to get and scape each page in turn of first five pages of news articles from The Merkle.com
-async function fetchesMkl(searchterm) {
+async function fetchesMkl(searchterm, numRecords) {
 
     // Initialise an empty array to store all scraped objects
     var resultsMkl = [];
+    var countRecords = 0;
+
     // Number of pages to scrape
     var numPages = 1;
 
@@ -299,16 +325,20 @@ async function fetchesMkl(searchterm) {
                     .children('span')
                     .text();
                 result.newssite_full = "The merkle";
-                result.newsite_abbr = "TMK";
+                result.newssite_abbr = "TMK";
 
                 // If no searchterm then push result object to results array
                 // If searchterm present then search artcile title for searchterm and push to array if found/match
-                if (!searchterm) {
-                    results.push(result);
-                } else {
-                    if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+                if (countRecords < numRecords) {
+                    if (!searchterm) {
                         results.push(result);
+                    } else {
+                        if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+                            results.push(result);
+                        }
                     }
+
+                    countRecords++;
                 }
             });
 
@@ -320,10 +350,11 @@ async function fetchesMkl(searchterm) {
 }
 
 // Async function to get and scape Brave New Coin site
-async function fetchBnc(searchterm) {
+async function fetchBnc(searchterm, numRecords) {
 
     // Initialise an empty array to store all scraped objects
     var resultsBnc = [];
+    var countRecords = 0;
 
     // Grab the body of the html with request
     var data = await axios.get("https://www.bravenewcoin.com/news").then(function (response) {
@@ -352,7 +383,7 @@ async function fetchBnc(searchterm) {
                 .children('a')
                 .children('p')
                 .text();
-            result.image = $(this)
+            result.image = "https://www.bravenewcoin.com" + $(this)
                 .children('span')
                 .children('a')
                 .children('img')
@@ -364,16 +395,21 @@ async function fetchBnc(searchterm) {
                 .text().slice(-11);
 
             result.newssite_full = "Brave New Coin";
-            result.newsite_abbr = "BNC";
+            result.newssite_abbr = "BNC";
 
             // If no searchterm then push result object to results array
             // If searchterm present then search artcile title for searchterm and push to array if found/match
-            if (!searchterm) {
-                resultsBnc.push(result);
-            } else {
-                if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+            if (countRecords < numRecords) {
+
+                if (!searchterm) {
                     resultsBnc.push(result);
+                } else {
+                    if (result.title.toLowerCase().indexOf(searchterm.toLowerCase()) >= 0) {
+                        resultsBnc.push(result);
+                    }
                 }
+
+                countRecords++
             }
         });
     });

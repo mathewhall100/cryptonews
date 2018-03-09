@@ -16,7 +16,7 @@
     <!-- Bootstrap v4 -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
         crossorigin="anonymous">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
     <!-- Stylesheet -->
     <link rel="stylesheet" href="/assets/css/style.css">
@@ -35,20 +35,27 @@
                 <strong>All your coin news in one place - scraped</strong>
             </p>
 
-            <!-- <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a> -->
-            <div class="dropdown text-right dropdown-posn">
-                <button class="btn btn-secondary dropdown-toggle " type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-                    aria-expanded="false">
-                    Select news
+            <div class="text-right header-btn-posn">
+                <button class="btn btn-lg btn-secondary header-btn-style ">
+                    <a href="/saved" role="button">View saved</a>
                 </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            </div>
+
+            <!-- save code for use when change button to dropdown catagory menu -->
+            {{!--
+            <div class="dropdown text-right dropdown-posn">
+                <button class="btn btn-secondary dropdown-toggle " type="button" id="view-saved" data-toggle="dropdown" aria-haspopup="true"
+                    aria-expanded="false">
+                    View Saved
+                </button>
+                <div class="dropdown-menu" aria-labelledby="view-saved">
                     {{#each categories}}
                     <a class="dropdown-item" href="/categories/{{this.id}}">
                         {{this.category_name}}
                     </a>
                     {{/each}}
                 </div>
-            </div>
+            </div> --}}
 
         </div>
 
@@ -132,3 +139,8 @@
 </body>
 
 </html>
+
+{{!-- popper.js --}}
+
+<script src = "https://unpkg.com/popper.js/dist/umd/popper.min.js">
+</script>

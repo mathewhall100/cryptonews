@@ -3,7 +3,9 @@
 
     <nav class="navbar navbar-expand-md bg-dark navbar-dark">
         <!-- Brand -->
-        <a class="navbar-brand" href="#">Select news source: </a>
+        <a class="navbar-brand" href="/"><i class="fas fa-home"></i></a>
+        <span class="navbar-divider">|</span>
+        <a class="navbar-brand" href="#">More from: </a>
 
         <!-- Toggler/collapsibe Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -14,16 +16,16 @@
         <div class="collapse navbar-collapse" id="collapsibleNavbar">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Coin telegraph</a>
+                    <a class="nav-link" href="/scrape-ctg/search?term=">Coin telegraph</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Cryptocoin news</a>
+                    <a class="nav-link" href="/scrape-ccn/search?term=">Cryptocoin news</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">The merkle</a>
+                    <a class="nav-link" href="/scrape-mkl/search?term=">The merkle</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Brave new coin</a>
+                    <a class="nav-link" href="/scrape-bnc/search?term=">Brave new coin</a>
                 </li>
             </ul>
 
@@ -85,7 +87,7 @@
                                                     "link": "{{this.link}}",
                                                     "date": "{{this.date}}",
                                                     "newssite_full": "{{this.newssite_full}}",
-                                                    "newsite_abbr": "{{this.newsite_abbr}}"
+                                                    "newssite_abbr": "{{this.newssite_abbr}}"
                                                 }'>Save</button>
 
                                     </span>
@@ -97,22 +99,73 @@
                         {{/each}}
                     </table>
                     <hr>
-                </div class="clearfix">
-                <div class="card-btns-center">
-                    <a href="#" class="card-btns">More</a>
-                    <a href="#" class="card-btns">Remove</a>
+                </div>
+                <div class="card-btns-center clearfix">
                     <br />
+                    {{!-- Card footer stuff here --}}
                 </div>
             </div>
 
-
-            <div class="card card-style ">
+            <div class="card card-style">
                 <div class="card-body">
                     <h4 class="card-title">Cryptocoin News</h4>
-                    <p class="card-text">Some example text. Some example text.</p>
-                    <a href="#" class="card-btns">More</a>
 
-                    <a href="#" class="card-btns">Remove</a>
+                    <table class="table-display">
+                        {{#each resultsCcn}}
+
+                        <div>
+                            <tr>
+                                <td>
+                                    <hr>
+                                </td>
+                                <td>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="newsitem-image">
+                                    <a target="blank" href={{this.link}}>
+                                        <img src={{this.image}} height="100px">
+                                    </a>
+                                </td>
+                                <td class="newsitem-title">
+                                    <a target="blank" href={{this.link}}>{{this.title}}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="newsitem-description">{{this.description}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="newsitem-date">{{this.date}}</span>
+                                    <span class="newsitem-btns">
+
+                                        <button class="btn btn-sm newsitem-read-btn" data-value='{{this.link}}'>Read more...</button>
+
+                                        <button type="button" class="btn btn-sm newsitem-save-btn" data-value='{
+                                                    "title": "{{this.title}}",
+                                                    "description": "{{this.description}}",
+                                                    "image": "{{this.image}}",
+                                                    "link": "{{this.link}}",
+                                                    "date": "{{this.date}}",
+                                                    "newssite_full": "{{this.newssite_full}}",
+                                                    "newssite_abbr": "{{this.newssite_abbr}}"
+                                                }'>Save</button>
+
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </div>
+
+                        {{/each}}
+                    </table>
+                    <hr>
+                </div> 
+                <div class="card-btns-center clearfix">
+                    <br />
+                   {{!-- Card footer stuff here --}}
                 </div>
             </div>
 
@@ -122,20 +175,130 @@
             <div class="card card-style">
                 <div class="card-body">
                     <h4 class="card-title">The Merkle</h4>
-                    <p class="card-text">Some example text. Some example text.</p>
-                    <a href="#" class="card-link">More</a>
-                    <a href="#" class="card-link">Remove</a>
+
+                    <table class="table-display">
+                        {{#each resultsMkl}}
+
+                        <div>
+                            <tr>
+                                <td>
+                                    <hr>
+                                </td>
+                                <td>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="newsitem-image">
+                                    <a target="blank" href={{this.link}}>
+                                        <img src={{this.image}} height="100px">
+                                    </a>
+                                </td>
+                                <td class="newsitem-title">
+                                    <a target="blank" href={{this.link}}>{{this.title}}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="newsitem-description">{{this.description}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="newsitem-date">{{this.date}}</span>
+                                    <span class="newsitem-btns">
+
+                                        <button class="btn btn-sm newsitem-read-btn" data-value='{{this.link}}'>Read more...</button>
+
+                                        <button type="button" class="btn btn-sm newsitem-save-btn" data-value='{
+                                                    "title": "{{this.title}}",
+                                                    "description": "{{this.description}}",
+                                                    "image": "{{this.image}}",
+                                                    "link": "{{this.link}}",
+                                                    "date": "{{this.date}}",
+                                                    "newssite_full": "{{this.newssite_full}}",
+                                                    "newssite_abbr": "{{this.newssite_abbr}}"
+                                                }'>Save</button>
+
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </div>
+
+                        {{/each}}
+                    </table>
+                    <hr>
+                </div>
+                <div class="card-btns-center clearfix">
+                    <br />
+                    {{!-- Card footer stuff here --}}
                 </div>
             </div>
 
             <div class="card card-style">
                 <div class="card-body">
                     <h4 class="card-title">Brave New coin</h4>
-                    <p class="card-text">Some example text. Some example text.</p>
-                    <a href="#" class="card-link">More</a>
-                    <a href="#" class="card-link">Remove</a>
+
+                    <table class="table-display">
+                        {{#each resultsBnc}}
+
+                        <div>
+                            <tr>
+                                <td>
+                                    <hr>
+                                </td>
+                                <td>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="newsitem-image">
+                                    <a target="blank" href={{this.link}}>
+                                        <img src={{this.image}} height="100px">
+                                    </a>
+                                </td>
+                                <td class="newsitem-title">
+                                    <a target="blank" href={{this.link}}>{{this.title}}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="newsitem-description">{{this.description}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="newsitem-date">{{this.date}}</span>
+                                    <span class="newsitem-btns">
+
+                                        <button class="btn btn-sm newsitem-read-btn" data-value='{{this.link}}'>Read more...</button>
+
+                                        <button type="button" class="btn btn-sm newsitem-save-btn" data-value='{
+                                                    "title": "{{this.title}}",
+                                                    "description": "{{this.description}}",
+                                                    "image": "{{this.image}}",
+                                                    "link": "{{this.link}}",
+                                                    "date": "{{this.date}}",
+                                                    "newssite_full": "{{this.newssite_full}}",
+                                                    "newssite_abbr": "{{this.newssite_abbr}}"
+                                                }'>Save</button>
+
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </div>
+
+                        {{/each}}
+                    </table>
+                    <hr>
+                </div>
+                <div class="card-btns-center clearfix">
+                    <br />
+                    {{!-- Card footer stuff here --}}
                 </div>
             </div>
+
+            
         </div>
 
     </div>
@@ -175,7 +338,7 @@
             content += '<textarea class="form-control" id="new-note-text" placeholder="Text"></textarea>';
             content += '</div>';
             content += '</form>';
-            var date = '<div class="modal-date" id="modal-date">' + Date().slice(4, 15) + '</div>';  
+            var date = '<div class="modal-date" id="modal-date">' + Date().slice(4, 15) + '</div>';
             var footer = '<button type="submit" class="btn btn-primary" data-dismiss="modal" id="modal-close-submit">Save</button>';
             footer += '<button type="button" class="btn btn-primary" data-dismiss="modal" id="modal-close">Cancel</button>';
 
@@ -206,6 +369,7 @@
                     data: newSave
                 }).then(
                     function () {
+                        alert("News item and notes successfully saved.")
                         location.reload();
                     });
 

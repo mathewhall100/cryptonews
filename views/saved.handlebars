@@ -1,0 +1,322 @@
+{{!-- handlebars code for inserting into {{{body}}} element of main.handlebars --}}
+<div class="wrap">
+
+    <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+        <!-- Brand -->
+        <a class="navbar-brand" href="/"><i class="fas fa-home"></i></a>
+        <span class="navbar-divider">|</span>
+        <a class="navbar-brand" href="">More from: </a>
+
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="/scrape-ctg/search?term=">Coin telegraph</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/scrape-ccn/search?term=">Cryptocoin news</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/scrape-mkl/search?term=">The merkle</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/scrape-bnc/search?term=">Brave new coin</a>
+                </li>
+            </ul>
+
+            <nav class="navbar navbar-expand-md bg-dark navbar-dark ml-auto navbar-posn">
+                <form class="form-inline" action="/search">
+                    <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </nav>
+
+            </form>
+        </div>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-8">
+
+            <div class="card card-style">
+                <div class="card-body">
+                    <h4 class="card-title">Saved articles</h4>
+
+                    <table class="table-display">
+
+                        {{#if articles}} {{#each articles}}
+
+                        <div>
+                            <tr>
+                                <td>
+                                    <hr>
+                                </td>
+                                <td>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="newsitem-image">
+                                    <a target="blank" href={{this.link}}>
+                                        <img src={{this.image}} height="100px">
+                                    </a>
+                                </td>
+                                <td class="newsitem-title">
+                                    <a target="blank" href={{this.link}}>{{this.title}}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="newsitem-description">{{this.description}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="newsitem-date">{{this.date}}</span>
+                                    <span class="newsitem-btns">
+
+                                        <button class="btn btn-sm read-btn" data-value='{{this.link}}'>Read more...</button>
+                                        <button class="btn btn-sm view-btn" data-value='{ "title": "{{this.title}}", "image": "{{this.image}}", "author": "{{this.note.author}}", "text": "{{this.note.text}}", "date": "{{this.note.date}}", "id": "{{this.note._id}}" }'>View notes</button>
+
+                                        <button type="button" class="btn btn-sm delete-btn" data-value='{ "id": "{{this._id}}", "note": "{{this.note._id}}" }'>Delete</button>
+                                    </span>
+                                </td>
+                            </tr>
+                        </div>
+
+                        {{/each}} {{else}} There are no saved items to view. {{/if}}
+                    </table>
+                    <hr>
+                </div>
+                <div class="card-btns-center clearfix">
+                    <a href="#" class="card-btns">Delete All</a>
+                    <br />
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card card-style">
+                <div class="card-body">
+                    <h4 class="card-title">Notes</h4>
+                    <div id="sidenotes">
+                        {{!-- dynamic content goes here --}}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    $(function () {
+
+        //  Open news article in new window to read
+        $(".read-btn").on("click", function (event) {
+
+            window.open($(this).data("value"), '_blank');
+
+        });
+
+
+        //  Delete an article
+        $(".delete-btn").on("click", function (event) {
+
+            var id = $.parseJSON($(this).attr("data-value"));
+
+            $.ajax("/delete", {
+                type: "DELETE",
+                data: id
+            }).then(
+                function (deleted) {
+                    console.log(deleted)
+                    alert("Item successfully deleted")
+                    location.reload();
+                });
+
+        });
+
+
+        // View notes associated with an article
+        $(".view-btn").on("click", function (event) {
+
+            var data = $.parseJSON($(this).attr("data-value"));
+
+            itemHtml = '<table><tr class="sidenote-article-box"><td><div id="sidenote-newsitem-image"><img src="' + data.image + '" height="50px"></div></td><td>';
+            itemHtml += '<div id="sidenote-newsitem-title">' + data.title + '</div></td></tr></table><br />';
+
+            var noteHtml = 'Notes: <br /><div class="sidenote-content">' + data.text + '</div><br />';
+            noteHtml += '<p>By:  <span>' + data.author + '</span></p><p><span>Date: ' + data.date + '</span></p><br />';
+
+            var addButton = '<button type="button" class="btn btn-sm sidenotes-btn" id="edit" data-id="' + data.id + '">Add note</button>';
+            editButton = '<button type="button" class="btn btn-sm sidenotes-btn" id="edit" data-value={ "title": "' + data.title + '", "image": "' + data.image + '", "author": "' + data.author + '", "text": "' + data.text + '", "date": "' + data.date + '", "id": "' + data.id + '" }">Edit</button>';
+
+            var clearButton = '<button type="button" class="btn btn-sm sidenotes-btn" id="clear" data-id="' + data.id + '">Clear</button>';
+            var closeButton = '<button type="button" class="btn btn-sm sidenotes-btn" id="close">Close</button>'; 
+            
+            $("#sidenotes").html(itemHtml);
+
+            if (data.text) {
+                $("#sidenotes").append(noteHtml);
+            } else { $("#sidenotes").append("This article has no notes."); }
+
+            $("#sidenotes").append("<hr>");
+
+            if (data.text) { $("#sidenotes").append(editButton); }
+                else { $("#sidenotes").append(addButton); } 
+
+            $("#sidenotes").append(clearButton);
+            $("#sidenotes").append(closeButton);
+
+
+            // Add/Edit note modal box
+
+            
+            $("#edit").on('click', function (event) {
+                event.preventDefault();
+
+                // Modal box 
+
+                var title = 'CoinScrape';
+
+                var heading = '<table><tr><td><img src=' + data.image + ' height="50px"></td>';
+                heading += '<td><span class="modal-heading">' + data.title + '</span></td></tr></table>';
+                heading += '<br />Edit the note for this article below.';
+
+                var content = '<form id="new-note-form">';
+                content += '<div class="form-group">';
+                content += '<label for="new-note-author" class="form-control-label">Author</label>';
+                content += '<input type="text" class="form-control" id="update-note-author" value="' + data.author + '">';
+                content += '</div>';
+                content += '<div class="form-group">';
+                content += '<label for="new-note-text" class="form-control-label">Note</label>';
+                content += '<textarea class="form-control" id="update-note-text" name ="textarea">' + data.text + '</textarea>';
+                content += '</div>';
+                content += '</form>';
+
+                var date = '<div class="modal-date" id="modal-date">' + Date().slice(4, 15) + '</div>';
+
+                var footer = '<button type="submit" class="btn btn-sm sidenotes-btn" data-dismiss="modal" id="update" data-id="' + data.id + '">Save</button>';
+                footer += '<button type="button" class="btn btn-sm sidenotes-btn" data-dismiss="modal" id="modal-close">Cancel</button>';
+
+                createModal(title, heading, content, date, footer);
+
+                // Close modal 
+
+                $('#dynamicModal').on('hidden.bs.modal', function (e) {
+                    $(this).remove();
+                });
+
+                // Update note
+
+                $("#update").on('click', function (event) {
+                    event.preventDefault();
+
+                    var noteAuthor = $('#update-note-author').val().trim();
+                    var noteText = $('#update-note-text').val().trim();
+                    var noteDate = Date().slice(4, 15);
+                    var noteId = $(this).data("id");
+
+                    newNote = {
+                        author: noteAuthor,
+                        text: noteText,
+                        date: noteDate,
+                        id: noteId
+                    };
+
+                    $.ajax("/note-update", {
+                        type: "PUT",
+                        data: newNote
+                    }).then(
+                        function () {
+                            alert("The note has been successfully updated.")
+                            location.reload();
+                        });
+
+                });
+
+            });
+
+            // Clear note
+
+            $("#clear").on('click', function (event) {
+                event.preventDefault();
+
+                var noteId = $(this).data("id");
+
+                newNote = {
+                    author: "",
+                    text: "",
+                    date: "",
+                    id: noteId
+                };
+
+                $.ajax("/note-update", {
+                    type: "PUT",
+                    data: newNote
+                }).then(
+                    function () {
+                        alert("Note contents deleted.")
+                        location.reload();
+                    });
+
+            });
+
+        });
+
+
+        // Functions -----------------------------------------------
+
+
+        // Display generic modal box with text as parameters
+        function createModal(title, heading, content, footer, date) {
+
+            var html = '<div id="dynamicModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modal-title" aria-hidden="true">';
+            html += '<div class="modal-dialog" role="document">';
+            html += '<div class="modal-content">';
+            html += '<div class="modal-header">';
+            html += '<h5 class="modal-title" id="modal-title">' + title + '</h5>';
+            html += '<button class="close" data-dismiss="modal" aria-label="Close">';
+            html += '<span aria-hidden="true">&times;</span>';
+            html += '</button>';
+            html += '</div>';
+            html += '<div class="modal-body">';
+            html += heading + '<br /><br />'; //   modal heading text here
+            html += content + '<br />'; //   modal form details here
+            html += date;
+            html += '</div>';
+            html += '<div class="modal-footer">';
+            html += footer; // modal footer here
+            html += '</div>'; // close footer div
+            html += '</div>'; // close content div
+            html += '</div>'; // close dialog div
+            html += '</div>'; // close modalWindow div
+
+            $('body').append(html);
+
+            $('#dynamicModal').modal();
+            $('#dynamicModal').modal('show');
+
+        };
+
+
+
+
+
+    });  // close of $(function() {
+
+</script>

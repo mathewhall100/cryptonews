@@ -39,7 +39,6 @@ app.set("view engine", "handlebars");
 // Import routes
 
 app.use( require("./controllers/fetch.js"));
-
 app.use( require("./controllers/home.js"));
 
 
