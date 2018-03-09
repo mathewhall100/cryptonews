@@ -27,6 +27,8 @@ app.use(express.static("public"));
 
 // Set mongoose to use promises (.then syntax) instead
 // Connect to the Mongo DB
+
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscrape";
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/newsscrape");
 
