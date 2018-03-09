@@ -45,11 +45,11 @@
 
             <div class="card card-style">
                 <div class="card-body">
-                    <h4 class="card-title">{{newssite}}</h4>
+                    <h4 class="card-title">Results of search for "{{searchterm}}"</h4>
 
                     <table class="table-display">
 
-                        {{#if articles}} {{#each articles}}
+                        {{#if articles}} {{#each articles.results}}
 
                         <div>
                             <tr>
@@ -76,7 +76,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <span class="newsitem-date">{{this.date}}</span>
+                                    <span class="newsitem-date">From {{this.newssite_full}}. &nbsp;&nbsp;Published {{this.date}}</span>
                                     <span class="newsitem-btns">
 
                                         <button class="btn btn-sm newsitem-read-btn" data-value='{{this.link}}'>Read more...</button>

@@ -18,7 +18,7 @@ var cheerio = require("cheerio");
 
 routerScrape.get("/", function (req, res) {
 
-    var numRecords = 5;
+    var numRecords = 6;
 
     var data = fetchAll(req.query.term, numRecords) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
         .then(function (hbsObj) {
@@ -34,12 +34,17 @@ routerScrape.get("/", function (req, res) {
 // ---------------------------------- Scraping routes --------------------------------
 
 // A GET route for scraping all sites
-routerScrape.get("/scrape-all/:term", function (req, res) {
+routerScrape.get("/search/:term", function (req, res) {
 
-    var data = fetchAll(req.query.term) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
-        .then(function (result) {
-            //console.log(result);
-            return res.json(result);
+    var data = fetchAll(req.query.term, 25) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
+        .then(function (articleList) {
+
+            var hbsObj = {
+                articles: articleList,
+                searchterm: req.query.term
+            };
+            console.log(hbsObj);
+            return res.render("search_news", hbsObj);
         }).catch(function (error) {
             console.error('ERROR', error)
         });
@@ -97,7 +102,7 @@ routerScrape.get("/scrape-mkl/:term", function (req, res) {
 });
 
 
-// A GET route for scraping xxxx website
+// A GET route for scraping brave new coin website
 routerScrape.get("/scrape-bnc/:term", function (req, res) {
 
     var data = fetchBnc(req.query.term, 25)
@@ -128,7 +133,6 @@ async function fetchAll(searchterm, numRecords) {
         resultsMkl: await fetchesMkl(searchterm, numRecords),
         resultsBnc: await fetchBnc(searchterm, numRecords)
     };
-
 
     //console.log(hbsObj);
     return hbsObj;
@@ -282,7 +286,7 @@ async function fetchesMkl(searchterm, numRecords) {
     var countRecords = 0;
 
     // Number of pages to scrape
-    var numPages = 1;
+    var numPages = 3;
 
     for (var page = 1; page <= numPages; page++) {
 

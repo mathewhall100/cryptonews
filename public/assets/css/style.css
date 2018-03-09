@@ -88,6 +88,10 @@
     margin: 0;
 }
 
+.newsitem-image img{
+    border: 1px solid lightgrey;
+}
+
 .newsitem-title {
     font-size: 14px;
     font-weight: bold;
