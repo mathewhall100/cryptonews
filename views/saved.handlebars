@@ -159,7 +159,7 @@
             itemHtml = '<table><tr class="sidenote-article-box"><td><div id="sidenote-newsitem-image"><img src="' + data.image + '" height="50px"></div></td><td>';
             itemHtml += '<div id="sidenote-newsitem-title">' + data.title + '</div></td></tr></table><br />';
 
-            var noteHtml = 'Notes: <br /><div class="sidenote-content">' + data.text + '</div><br />';
+            var noteHtml = 'Note <br /><div class="sidenote-content">' + data.text + '</div><br />';
             noteHtml += '<p>By:  <span>' + data.author + '</span></p><p><span>Date: ' + data.date + '</span></p><br />';
 
             var addButton = '<button type="button" class="btn btn-sm sidenotes-btn" id="edit" data-id="' + data.id + '">Add note</button>';
@@ -172,7 +172,7 @@
 
             if (data.text) {
                 $("#sidenotes").append(noteHtml);
-            } else { $("#sidenotes").append("This article has no notes."); }
+            } else { $("#sidenotes").append("This article has no notes yet."); }
 
             $("#sidenotes").append("<hr>");
 
