@@ -36,7 +36,7 @@ routerScrape.get("/", function (req, res) {
 // A GET route for scraping all sites
 routerScrape.get("/search/:term", function (req, res) {
 
-    var data = fetchAll(req.query.term, 25) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
+    var data = searchAll(req.query.term, 25) // (c.f. http://localhost:3000/scrape-mk/search?term=xyx)
         .then(function (articleList) {
 
             var hbsObj = {
@@ -127,12 +127,36 @@ routerScrape.get("/scrape-bnc/:term", function (req, res) {
 // Async function to get and scape all sites
 async function fetchAll(searchterm, numRecords) {
 
-    var hbsObj = {
-        resultsCcn: await fetchCcn(searchterm, numRecords),
-        resultsCtg: await fetchCtg(searchterm, numRecords),
-        resultsMkl: await fetchesMkl(searchterm, numRecords),
-        resultsBnc: await fetchBnc(searchterm, numRecords)
-    };
+    let [ccn, ctg, mkl, bnc] = await Promise.all([
+        fetchCcn,
+        fetchCtg,
+        fetchesMkl,
+        fetchBnc
+
+    ].map(fn => fn(searchterm, numRecords)))
+
+    hbsObj = {
+        resultsCcn: ccn,
+        resultsCtg: ctg,
+        resultsMkl: mkl,
+        resultsBnc: bnc
+    }
+
+    //console.log(hbsObj);
+    return hbsObj;
+}
+
+async function searchAll(searchterm, numRecords) {
+
+    let [ccn, ctg, mkl, bnc] = await Promise.all([
+        fetchCcn,
+        fetchCtg,
+        fetchesMkl,
+        fetchBnc
+
+    ].map(fn => fn(searchterm, numRecords)))
+
+    hbsObj = [].concat(ccn, ctg, mkl, bnc);
 
     //console.log(hbsObj);
     return hbsObj;
