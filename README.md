@@ -58,15 +58,16 @@ Whenever a saved article summary is displayed, there will be the option to view,
   
 1. Node.js
 2. Express.js
-3. MongoDB 
-4. Mongoose
+3. Handlebars 
+4. MongoDB 
+5. Mongoose 
 
 and demonstrates:
   
-5. model-view-controller organisation
-6. use of cheerio for efficient web scraping
-7. use of a nosql, document oriented database (MongoDB)
-8. deployment to heroku
+6. model-view-controller organisation
+7. use of cheerio for efficient web scraping
+8. use of a nosql, document oriented database (MongoDB)
+9. deployment to Heroku
  
 ### NPM Packages ###
 
@@ -74,7 +75,7 @@ and demonstrates:
 2. npm install mongo
 3. npm install body-parser
 4. npm install method-override
-5. npom install axios
+5. npm install axios
 6. npm install cheerio
 7. npm install express-handlebars
 8. npm install morgan

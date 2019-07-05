@@ -110,10 +110,6 @@ routerHome.put("/note-update", function (req, res) {
                         res.json(err);
                 });
 
-
-
-
-
 });
 
 

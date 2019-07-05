@@ -171,37 +171,45 @@ async function fetchCtg(searchterm, numRecords) {
     var countRecords = 0;
 
     // Grab the body of the html with request
-    var data = await axios.get("https://www.cointelegraph.com").then(function (response) {
+    var data = await axios.get("https://cointelegraph.com/tags/bitcoin").then(function (response) {
         // Then, load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(response.data);
 
         // Grab div tags with class "post boxed ", and do the following:
-        $('div[class="post boxed "]').each(function (i, element) {
+        $('article').each(function (i, element) {
 
             // Initialise empty result object
             var result = {};
-
             result.title = $(this)
+                .children('div')
+                .children('header')
+                .children('div')
                 .children('a')
-                .children('span[class="postTitle"]')
+                .children('span')
                 .text();
             result.link = $(this)
                 .children('a')
                 .attr("href");
             result.description = $(this)
-                .children('div[class="image"]')
-                .children('a')
+                .children('div')
+                .children('main')
                 .children('p')
                 .text();
             result.image = $(this)
-                .children('div[class="image"]')
                 .children('a')
+                .children('figure')
+                .children('div')
+                .children('div')
                 .children('img')
                 .attr('src');
+                console.log(result.image)
+                
             result.date = $(this)
                 .children('div')
-                .children('span[class="date"]')
-                .text().slice(1);
+                .children('header')
+                .children('div')
+                .children('time')
+                .text();
             result.newssite_full = "Coin Telegraph";
             result.newssite_abbr = "CTG";
             result.id = countRecords;
@@ -209,7 +217,7 @@ async function fetchCtg(searchterm, numRecords) {
             // If no searchterm then push result object to results array
             // If searchterm present then search artcile title for searchterm and push to array if found/match
             if (countRecords < numRecords) {
-
+ 
                 if (!searchterm) {
 
                     resultsCtg.push(result);
@@ -238,33 +246,38 @@ async function fetchCcn(searchterm, numRecords) {
     var countRecords = 0;
 
     // Grab the body of the html with request
-    var data = await axios.get("https://www.ccn.com/").then(function (response) {
+    var data = await axios.get("https://cryptocoin.news/category/news/").then(function (response) {
         // Then, load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(response.data);
 
         // Grab every article tag, and do the following:
-        $("article").each(function (i, element) {
+        $('div[class="td-block-span6"]').each(function (i, element) {
 
             // Initialise empty result object
             var result = {};
-
+            //console.log($(this))
             result.title = $(this)
                 .children("div")
+                .children("h3")
                 .children("a")
                 .attr("title");
             result.description = $(this)
                 .children("div")
+                .children("h3")
                 .children("a")
                 .attr("title");
             result.link = $(this)
                 .children("div")
+                .children("h3")
                 .children("a")
                 .attr("href");
             result.image = $(this)
                 .children("div")
+                .children("div")
+                .children("div")
                 .children("a")
                 .children("img")
-                .attr("src");
+                .attr("data-img-url");
             result.internal_category = $(this)
                 .children("header")
                 .children("div")
@@ -272,10 +285,11 @@ async function fetchCcn(searchterm, numRecords) {
                 .children("a")
                 .attr("title");
             result.date = $(this)
-                .children("header")
                 .children("div")
+                .children("div")
+                .children("span")
                 .children("time")
-                .text().slice(1);
+                .text()
             result.newssite_full = "Crypto Coin News";
             result.newssite_abbr = "CNN";
 
@@ -385,24 +399,26 @@ async function fetchBnc(searchterm, numRecords) {
     var countRecords = 0;
 
     // Grab the body of the html with request
-    var data = await axios.get("https://www.bravenewcoin.com/news").then(function (response) {
+    var data = await axios.get("https://bravenewcoin.com/insights/latest").then(function (response) {
         // Then, load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(response.data);
 
         // Grab div tags with class "post boxed ", and do the following:
-        $('li[class="BlogSummaryNews"]').each(function (i, element) {
+        $('div[class="media-thumbnail"]').each(function (i, element) {
 
             // Initialise empty result object
             var result = {};
 
             result.title = $(this)
-                .children('span')
-                .children('div[class="fader"]')
-                .children('h3')
+            console.log("result-title: ", result.title)
+                .children('div')
+                .children('div')
                 .children('a')
-                .text();
+                .attr("title");
+                console.log("result-title: ", result.title)
             result.link = "https://www.bravenewcoin.com" + $(this)
-                .children('span')
+                .children('div')
+                .children('div')
                 .children('a')
                 .attr("href");
             result.description = $(this)

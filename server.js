@@ -16,7 +16,7 @@ var app = express();
 // Configure middleware
 
 // Use morgan logger for logging requests
-app.use(logger("dev"));
+//app.use(logger("dev"));
 
 // Use body-parser for handling form submissions
 app.use(bodyParser.urlencoded({extended: true}));
@@ -39,12 +39,8 @@ app.set("view engine", "handlebars");
 
 
 // Import routes
-
 app.use( require("./controllers/fetch.js"));
 app.use( require("./controllers/home.js"));
-
-
-
 
 // Start the server
 app.listen(PORT, function () {
