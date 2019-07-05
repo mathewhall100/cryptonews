@@ -1,57 +1,35 @@
-# CoinScrape
-## Week 17 Homework - Full stack app with Node, Expressa and MongoDB.
-.
+# Cryptonews
+## All the weeks crytocurrency news in one place!
+<br />
 View project on heroku at https://vast-anchorage-63071.herokuapp.com/
-.          
-.        
-## Introduction & Instructions
+<br />      
+<br />
+<img src="public/assets/images/home.PNG" width="600px">
 
-### Homepage ###
+## Instructions
 
-CoinScrape is a one stop shop for timely cryptocurrency news.  
+Cryptonews is a one stop shop for timely cryptocurrency news.  
 
-On startup the app scarpes the major crypto websites and news outlets for the latest cryptocurency news stories and presents a concise summary of each news articles, grouped by source,  for immediate review. 
+On startup the app scarpes the major crypto websites and news outlets for the latest cryptocurency news stories and presents a concise summary of each news articles, grouped by source,  for immediate review. From the homepage the user may requst more news from a particular source using the navbar menu or search for news from all the outlets with a search term of their choice, try 'bitcoin'! 
+<br />  
+Cryptocoin users can click on an article to read or save the article to their saved articles list to read later using the buttons to the right of each article summary. saved artocles can be viewed at any time right from the homepage. 
 
-![](public/assets/images/homepage.PNG)
-.   
-.   
+<img src="public/assets/images/saveditems.PNG" width="400px">
 
-Not found what you want? From the homepage the user may requst more news from a particular source using the navbar menu:
+Attach a note to each saved article by filing out the saved note dialog which appears whenever an article is saved. 
 
-![](public/assets/images/morenews.PNG)
-.    
-.  
-or search for news from all the outlets with a search term of their choice, try 'bitcoin'! 
-
-![](public/assets/images/search.PNG)
-.  
-.  
-From displayed sumaries, users can clickj to read the whole article (opens in a separate tab) or save the article reference to their saved articles list to read later or keep for reference using the buttons to the right of each article summary.
-
-Finally from the homepage, users can view all their saved articles by clicking on the 'saved' button at the top right:
-
-![](public/assets/images/savedbtn.PNG)
-
-
-### Creating and editing articles and notes ###
-
-In CoinScrape, users can record and save notes on each article they save. Clicking 'Save' adjacent to any article anywhere on the site brings up the save note dialog box. 
-
-![](public/assets/images/additembox.PNG)
-.  
-.  
+<img src="public/assets/images/additembox.PNG" width="400px">
+<br />  
+<br />  
 Here, users may enter their name and a note on the article. Clicking 'Save' saves the note to selected article to the database along with the associated note. Leaving the fields blank will create a blank note that can be written to at a later date if required. 
 
 On the saved articles page, users have the option to read the article in full, delete the article from the saved list or to view any associated note. 
-
-![](public/assets/images/newsitembtns.PNG)
-.  
-.  
+<br />  
+<br /> 
 Notes to view appear in the right-side panel along with options to edit the content of the note or clear the contents. If there is no  note assocaited with the article, the user is informed and given the option to add a an associated note. 
 
-![](public/assets/images/saveditems.PNG)
-.  
-.  
+<br />  
+<br />  
 Whenever a saved article summary is displayed, there will be the option to view, edit or clear its assocated note, and both articles and notes are stored permanently on a remote database.
 
 ### The application uses: ###
@@ -81,6 +59,6 @@ and demonstrates:
 8. npm install morgan
 
 
-# Copyright
+## License
 
-Mathew Hall (C) 2018. All Rights Reserved.
+[MIT license](LICENSE.txt)

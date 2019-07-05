@@ -399,7 +399,7 @@ async function fetchBnc(searchterm, numRecords) {
     var countRecords = 0;
 
     // Grab the body of the html with request
-    var data = await axios.get("https://bravenewcoin.com/insights/latest").then(function (response) {
+    var data = await axios.get("https://bravenewcoin.com/insights/latest/").then(function (response) {
         // Then, load that into cheerio and save it to $ for a shorthand selector
         var $ = cheerio.load(response.data);
 
@@ -415,7 +415,7 @@ async function fetchBnc(searchterm, numRecords) {
                 .children('div')
                 .children('a')
                 .attr("title");
-                console.log("result-title: ", result.title)
+                //console.log("result-title: ", result.title)
             result.link = "https://www.bravenewcoin.com" + $(this)
                 .children('div')
                 .children('div')

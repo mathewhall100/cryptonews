@@ -42,70 +42,7 @@
 
     <div class="row">
         <div class="col-md-6">
-
-            <div class="card card-style">
-                <div class="card-body">
-                    <h4 class="card-title">Coin Telegraph</h4>
-
-                    <table class="table-display">
-                        {{#each resultsCtg}}
-
-                        <div>
-                            <tr>
-                                <td>
-                                    <hr>
-                                </td>
-                                <td>
-                                    <hr>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td rowspan="3" class="newsitem-image">
-                                    <a target="blank" href={{this.link}}>
-                                        <img src={{this.image}} height="100px">
-                                    </a>
-                                </td>
-                                <td class="newsitem-title">
-                                    <a target="blank" href={{this.link}}>{{this.title}}</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="newsitem-description">{{this.description}}</td>
-
-                            </tr>
-                            <tr>
-                                <td>
-                                    <span class="newsitem-date">{{this.date}}</span>
-                                    <span class="newsitem-btns">
-
-                                        <button class="btn btn-sm newsitem-read-btn" data-value='{{this.link}}'>Read more...</button>
-
-                                        <button type="button" class="btn btn-sm newsitem-save-btn" data-value='{
-                                                    "title": "{{this.title}}",
-                                                    "description": "{{this.description}}",
-                                                    "image": "{{this.image}}",
-                                                    "link": "{{this.link}}",
-                                                    "date": "{{this.date}}",
-                                                    "newssite_full": "{{this.newssite_full}}",
-                                                    "newssite_abbr": "{{this.newssite_abbr}}"
-                                                }'>Save</button>
-
-                                    </span>
-
-                                </td>
-                            </tr>
-                        </div>
-
-                        {{/each}}
-                    </table>
-                    <hr>
-                </div>
-                <div class="card-btns-center clearfix">
-                    <br />
-                    {{!-- Card footer stuff here --}}
-                </div>
-            </div>
-
+            
             <div class="card card-style">
                 <div class="card-body">
                     <h4 class="card-title">Cryptocoin News</h4>
@@ -168,7 +105,6 @@
                    {{!-- Card footer stuff here --}}
                 </div>
             </div>
-
         </div>
 
         <div class="col-md-6">
@@ -234,6 +170,74 @@
                     {{!-- Card footer stuff here --}}
                 </div>
             </div>
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="card card-style">
+                <div class="card-body">
+                    <h4 class="card-title">Coin Telegraph</h4>
+
+                    <table class="table-display">
+                        {{#each resultsCtg}}
+
+                        <div>
+                            <tr>
+                                <td>
+                                    <hr>
+                                </td>
+                                <td>
+                                    <hr>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3" class="newsitem-image">
+                                    <a target="blank" href={{this.link}}>
+                                        <img src={{this.image}} height="100px">
+                                    </a>
+                                </td>
+                                <td class="newsitem-title">
+                                    <a target="blank" href={{this.link}}>{{this.title}}</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="newsitem-description">{{this.description}}</td>
+
+                            </tr>
+                            <tr>
+                                <td>
+                                    <span class="newsitem-date">{{this.date}}</span>
+                                    <span class="newsitem-btns">
+
+                                        <button class="btn btn-sm newsitem-read-btn" data-value='{{this.link}}'>Read more...</button>
+
+                                        <button type="button" class="btn btn-sm newsitem-save-btn" data-value='{
+                                                    "title": "{{this.title}}",
+                                                    "description": "{{this.description}}",
+                                                    "image": "{{this.image}}",
+                                                    "link": "{{this.link}}",
+                                                    "date": "{{this.date}}",
+                                                    "newssite_full": "{{this.newssite_full}}",
+                                                    "newssite_abbr": "{{this.newssite_abbr}}"
+                                                }'>Save</button>
+
+                                    </span>
+
+                                </td>
+                            </tr>
+                        </div>
+
+                        {{/each}}
+                    </table>
+                    <hr>
+                </div>
+                <div class="card-btns-center clearfix">
+                    <br />
+                    {{!-- Card footer stuff here --}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
 
             <div class="card card-style">
                 <div class="card-body">
@@ -324,7 +328,7 @@
 
             // Modal box to input new customer details then make api call again
 
-            var title = 'CoinScrape';
+            var title = 'Cryptonews';
             var heading = '<table><tr><td><img src=' + newItem.image + ' height="50px"></td>';
             heading += '<td><span class="modal-heading">' + newItem.title + '</span></td></tr></table>';
             heading += '<br />Write a note to save with this article';
